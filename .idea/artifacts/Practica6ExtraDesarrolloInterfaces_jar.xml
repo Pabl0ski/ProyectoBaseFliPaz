@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Practica6ExtraDesarrolloInterfaces:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Practica6ExtraDesarrolloInterfaces_jar</output-path>
+    <root id="archive" name="Practica6ExtraDesarrolloInterfaces.jar">
+      <element id="module-output" name="Practica6ExtraDesarrolloInterfaces" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mysql-connector-j-9.1.0/mysql-connector-j-9.1.0.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+    </root>
+  </artifact>
+</component>
