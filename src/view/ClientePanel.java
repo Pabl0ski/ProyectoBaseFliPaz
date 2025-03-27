@@ -2,80 +2,62 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class ClientePanel extends JPanel {
-    private JTextField txtIdCliente, txtNombreEmpresa, txtEmail, txtPaginaWeb, txtTelefono;
-    private JTextField txtNombreContacto, txtInstagram, txtFacebook, txtCanalYoutube;
-    private JComboBox<String> cbSector, cbLocalidad;
-    private JButton btnGuardar;
+    private JTextField txtNombre, txtApellido, txtEmail, txtTelefono;
+    private JComboBox<String> comboLocalidad; // Para seleccionar la localidad
+    private JComboBox<String> comboSector; // Para seleccionar el sector
+    private JButton btnAgregarCliente;
 
     public ClientePanel() {
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(7, 2, 5, 5)); // Ajustamos el layout
         initComponents();
     }
 
     private void initComponents() {
-        JPanel formPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        add(new JLabel("Nombre:"));
+        txtNombre = new JTextField();
+        add(txtNombre);
 
-        formPanel.add(new JLabel("ID Cliente:"));
-        txtIdCliente = new JTextField();
-        formPanel.add(txtIdCliente);
+        add(new JLabel("Apellido:"));
+        txtApellido = new JTextField();
+        add(txtApellido);
 
-        formPanel.add(new JLabel("Nombre Empresa:"));
-        txtNombreEmpresa = new JTextField();
-        formPanel.add(txtNombreEmpresa);
-
-        formPanel.add(new JLabel("Email:"));
+        add(new JLabel("Email:"));
         txtEmail = new JTextField();
-        formPanel.add(txtEmail);
+        add(txtEmail);
 
-        formPanel.add(new JLabel("Página Web:"));
-        txtPaginaWeb = new JTextField();
-        formPanel.add(txtPaginaWeb);
-
-        formPanel.add(new JLabel("Teléfono:"));
+        add(new JLabel("Teléfono:"));
         txtTelefono = new JTextField();
-        formPanel.add(txtTelefono);
+        add(txtTelefono);
 
-        formPanel.add(new JLabel("Nombre Contacto:"));
-        txtNombreContacto = new JTextField();
-        formPanel.add(txtNombreContacto);
+        add(new JLabel("Localidad:"));
+        comboLocalidad = new JComboBox<>();
+        add(comboLocalidad);
 
-        formPanel.add(new JLabel("Instagram:"));
-        txtInstagram = new JTextField();
-        formPanel.add(txtInstagram);
+        add(new JLabel("Sector:"));
+        comboSector = new JComboBox<>();
+        add(comboSector);
 
-        formPanel.add(new JLabel("Facebook:"));
-        txtFacebook = new JTextField();
-        formPanel.add(txtFacebook);
+        btnAgregarCliente = new JButton("Agregar Cliente");
+        add(btnAgregarCliente);
+    }
 
-        formPanel.add(new JLabel("Canal YouTube:"));
-        txtCanalYoutube = new JTextField();
-        formPanel.add(txtCanalYoutube);
+    // Método para cargar localidades en el comboBox
+    public void cargarLocalidades(List<String> localidades) {
+        comboLocalidad.removeAllItems(); // Limpia el JComboBox antes de cargar nuevas localidades
+        for (String localidad : localidades) {
+            comboLocalidad.addItem(localidad);
+        }
+    }
 
-        formPanel.add(new JLabel("Sector:"));
-        cbSector = new JComboBox<>(new String[]{
-                "Centro_Estetica", "Centros_Fisioterapia", "Centros_TerapiasComplementarias",
-                "Centros_TerapiasMedicas", "Clinicas/Esteticas", "Depilacion",
-                "Manicura", "Peluquerias", "Talleres_Automocion"
-        });
-        formPanel.add(cbSector);
+    // Getters
+    public JComboBox<String> getComboLocalidad() {
+        return comboLocalidad;
+    }
 
-        formPanel.add(new JLabel("Localidad:"));
-        cbLocalidad = new JComboBox<>(new String[]{
-                "Almeria", "Avila", "Barcelona", "Bilbao", "Cadiz", "Ciudad_Real",
-                "Cordoba", "Cuenca", "Gerona", "Granada", "Guadalajara", "Huelva",
-                "Jaen", "LaCoruña", "Lerida", "Lugo", "Malaga", "Orense", "Pontevedra",
-                "Salamanca", "SanSebastian", "Santander", "Segovia", "Sevilla", "Tarragona",
-                "Teruel", "Toledo", "Valladolid", "Vitoria", "Zaragoza"
-        });
-        formPanel.add(cbLocalidad);
-
-        add(formPanel, BorderLayout.CENTER);
-
-        btnGuardar = new JButton("Guardar Cliente");
-        add(btnGuardar, BorderLayout.SOUTH);
-
-        // Aquí se pueden agregar validaciones de campos y mensajes para el usuario.
+    public JButton getBtnAgregarCliente() {
+        return btnAgregarCliente;
     }
 }

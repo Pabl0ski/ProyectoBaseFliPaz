@@ -1,24 +1,30 @@
 package controller;
 
 import model.ConexionDB;
+import view.ClientePanel;
 import view.LocalidadPanel;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocalidadController {
     private LocalidadPanel localidadPanel;
+    private ClientePanel clientePanel; // Agregamos referencia al panel de clientes
 
-    public LocalidadController(LocalidadPanel localidadPanel) {
+    public LocalidadController(LocalidadPanel localidadPanel, ClientePanel clientePanel) {
         this.localidadPanel = localidadPanel;
+        this.clientePanel = clientePanel; // Guardamos referencia
         initController();
     }
 
     private void initController() {
         localidadPanel.getBtnAgregarLocalidad().addActionListener(e -> agregarLocalidad());
-        cargarLocalidades(); // Implementa este método para cargar las localidades existentes desde la BD.
+        cargarLocalidades();
     }
 
     private void agregarLocalidad() {
@@ -27,12 +33,11 @@ public class LocalidadController {
             JOptionPane.showMessageDialog(localidadPanel, "El nombre de la localidad no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Insertar en la base de datos
         if(insertarLocalidadEnDB(nombreLocalidad)){
-            // Agregar la localidad a la lista visual
             localidadPanel.getListModel().addElement(nombreLocalidad);
             localidadPanel.getTxtNombreLocalidad().setText("");
             JOptionPane.showMessageDialog(localidadPanel, "Localidad agregada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarLocalidades(); // Volvemos a cargar las localidades para actualizar la UI
         } else {
             JOptionPane.showMessageDialog(localidadPanel, "Error al agregar la localidad", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -51,7 +56,24 @@ public class LocalidadController {
         }
     }
 
+    // Método para cargar las localidades en la lista y en el ClientePanel
     private void cargarLocalidades() {
-        // Aquí podrías implementar la carga de localidades desde la BD y añadirlas a localidadPanel.getListModel()
+        List<String> localidades = new ArrayList<>();
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement pst = con.prepareStatement("SELECT nombre FROM localidades");
+             ResultSet rs = pst.executeQuery()) {
+
+            localidadPanel.getListModel().clear(); // Limpia la lista antes de cargar nuevas localidades
+            while (rs.next()) {
+                String nombreLocalidad = rs.getString("nombre");
+                localidades.add(nombreLocalidad);
+                localidadPanel.getListModel().addElement(nombreLocalidad);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // Actualizamos el JComboBox de ClientePanel
+        clientePanel.cargarLocalidades(localidades);
     }
 }

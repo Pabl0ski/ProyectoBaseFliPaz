@@ -5,21 +5,20 @@ import controller.SectorController;
 
 import javax.swing.*;
 
-public class Main extends JFrame {
+public class MainFrame extends JFrame {
     private JTabbedPane tabbedPane;
     private ClientePanel clientePanel;
     private SectorPanel sectorPanel;
     private LocalidadPanel localidadPanel;
 
-    public Main() {
+    public MainFrame() {
         setTitle("Gestión de Clientes, Sectores y Localidades");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
         initComponents();
-        // Integración de controladores: instanciamos los controladores pasando los paneles correspondientes
         new SectorController(sectorPanel);
-        new LocalidadController(localidadPanel);
+        new LocalidadController(localidadPanel, clientePanel); // Pasamos clientePanel para actualizar localidades
     }
 
     private void initComponents() {
@@ -38,7 +37,7 @@ public class Main extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new Main().setVisible(true);
+            new MainFrame().setVisible(true);
         });
     }
 }
