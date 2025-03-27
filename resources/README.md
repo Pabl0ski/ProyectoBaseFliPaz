@@ -1,116 +1,88 @@
-# Gestión de Empleados - Aplicación de Escritorio
+# Proyecto Facilitar el uso de MySQL con Java
 
 ## Descripción
-Esta es una aplicación de escritorio desarrollada en **Java Swing** para la gestión de empleados y departamentos. Permite añadir, visualizar y gestionar empleados y departamentos, almacenar fotos de los empleados y generar informes en PDF utilizando **JasperReports**.
+**Proyecto para Flipaz** es una aplicación de escritorio desarrollada en **Java** con **Swing** que permite gestionar clientes, sectores y localidades. La aplicación sigue el patrón **Modelo-Vista-Controlador (MVC)** para mejorar la organización del código y la escalabilidad del sistema. Los datos se almacenan en una base de datos relacional para garantizar su persistencia.
 
-## Características
-- **Gestión de Empleados**:
-    - Añadir empleados con sus datos personales (nombre, apellidos, DNI, salario, fecha de incorporación).
-    - Asignar empleados a departamentos.
-    - Subir fotos de empleados a la base de datos.
+## Características Principales
+✅ **Gestor de Clientes:** Registro de clientes con información detallada (nombre, empresa, email, teléfono, redes sociales, etc.).
+✅ **Gestor de Sectores:** Creación y visualización de sectores comerciales.
+✅ **Gestor de Localidades:** Posibilidad de agregar y visualizar localidades.
+✅ **Interfaz Gráfica Amigable:** Diseñada con Java Swing para facilitar la interacción.
+✅ **Persistencia de Datos:** Conexión con una base de datos relacional mediante **JDBC**.
+✅ **Arquitectura MVC:** Separación entre la lógica de negocio, la interfaz de usuario y la manipulación de datos.
 
-- **Gestión de Departamentos**:
-    - Crear y visualizar departamentos.
-
-- **Persistencia de Datos**:
-    - Uso de una base de datos relacional **MySQL** para almacenar empleados y departamentos.
-
-- **Generación de Informes**:
-    - Número de empleados por departamento.
-    - Salario medio por departamento.
-
-## Tecnologías Utilizadas
-- **Java Swing** para la interfaz gráfica.
-- **JDBC** para la conexión con la base de datos.
-- **MySQL** como base de datos.
-- **JasperReports** para la generación de informes en PDF.
-
-## Instalación y Configuración
-
-### Requisitos
-- **Java JDK** 8 o superior.
-- **MySQL** instalado y en funcionamiento.
-- Conector JDBC para MySQL (`mysql-connector-java.jar`).
-- Bibliotecas de **JasperReports**.
+## Requisitos del Sistema
+### Software Necesario
+- **Java Development Kit (JDK 8 o superior)**
+- **MySQL** (o cualquier otro gestor de base de datos compatible con JDBC)
+- **Git** (opcional, para control de versiones)
+- **Un IDE recomendado:** IntelliJ IDEA, Eclipse o NetBeans
 
 ### Configuración de la Base de Datos
-1. Crear la base de datos ejecutando el siguiente script en MySQL:
+1. Crear una base de datos en MySQL:
+   ```sql
+   CREATE DATABASE flipaz_db;
+   ```
+2. Configurar la conexión en `ConexionDB.java`:
+   ```java
+   private static final String URL = "jdbc:mysql://localhost:3306/flipaz_db";
+   private static final String USUARIO = "tu_usuario";
+   private static final String PASSWORD = "tu_contraseña";
+   ```
 
-```sql
-CREATE DATABASE EmployeeManagementDB;
-USE EmployeeManagementDB;
-
-CREATE TABLE departments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
-);
-
-CREATE TABLE employees (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name1 VARCHAR(100) NOT NULL,
-    last_name2 VARCHAR(100),
-    dni VARCHAR(20) NOT NULL UNIQUE,
-    salary DECIMAL(10, 2) NOT NULL,
-    hire_date DATE NOT NULL,
-    department_id INT,
-    photo BLOB,
-    FOREIGN KEY (department_id) REFERENCES departments(id)
-);
-
-INSERT INTO departments (name) VALUES ('IT'), ('RRHH'), ('Administración'), ('Dirección');
-```
-
-2. Configurar las credenciales de la base de datos en `DBConnection.java`:
-```java
-private static final String USER = "root"; // Tu usuario de MySQL
-private static final String PASSWORD = "tu_contraseña"; // Tu contraseña de MySQL
-```
-
-### Ejecución de la Aplicación
-1. Clonar el repositorio:
+## Instalación y Ejecución
+### Clonar el Proyecto
 ```bash
-git clone https://github.com/tu_usuario/EmployeeManagementApp.git
+git clone https://github.com/tu-usuario/ProyectoFlipaz.git
 ```
 
-2. Compilar y ejecutar la aplicación desde tu IDE o terminal:
-```bash
-javac -d bin src/**/*.java
-java -cp bin main.Main
-```
-
-### Generación del Archivo JAR
-1. Compilar la aplicación:
+### Compilar el Proyecto
+Desde la terminal o consola, en la carpeta del proyecto, ejecuta:
 ```bash
 javac -d bin src/**/*.java
 ```
 
-2. Crear el archivo JAR ejecutable:
+### Generar el Archivo Ejecutable (.jar)
 ```bash
-jar cvfe EmployeeManagementApp.jar main.Main -C bin .
+jar cfm ProyectoFlipaz.jar Manifest.txt -C bin .
 ```
 
-3. Ejecutar el archivo JAR:
+### Ejecutar la Aplicación
 ```bash
-java -jar EmployeeManagementApp.jar
+java -jar ProyectoFlipaz.jar
 ```
 
 ## Uso de la Aplicación
-1. **Agregar Empleados**:
-    - Ingresar los datos personales y seleccionar el departamento.
-    - Subir una foto del empleado si es necesario.
-    - Hacer clic en "Guardar Empleado".
+1. **Clientes:** Agrega un nuevo cliente completando el formulario y haciendo clic en "Guardar Cliente".
+2. **Sectores:** Ingresa el nombre del sector y pulsa "Agregar Sector".
+3. **Localidades:** Registra una nueva localidad de la misma manera que un sector.
 
-2. **Gestionar Departamentos**:
-    - Hacer clic en "Gestionar Departamentos".
-    - Añadir nuevos departamentos y visualizar los existentes.
+## Estructura del Proyecto
+```plaintext
+/src
+  /model
+    Cliente.java
+    Sector.java
+    Localidad.java
+    ConexionDB.java
+  /view
+    MainFrame.java
+    ClientePanel.java
+    SectorPanel.java
+    LocalidadPanel.java
+  /controller
+    ClienteController.java
+    SectorController.java
+    LocalidadController.java
+```
 
-3. **Generar Informes**:
-    - Hacer clic en "Generar Informes".
-    - Seleccionar el informe que deseas visualizar.
+## Mejores Prácticas Implementadas
+✅ **Validaciones de Formulario:** Se verifican campos vacíos y formatos incorrectos.
+✅ **Gestor de Eventos:** Los controladores manejan las acciones del usuario.
+✅ **Carga Dinámica de Datos:** Los sectores y localidades se recuperan desde la base de datos al iniciar.
+✅ **Control de Errores:** Manejo de excepciones para evitar fallos en la ejecución.
 
-## Créditos
-Desarrollado por [Tu Nombre].
-
-## Licencia
-Este proyecto está bajo la licencia [MIT](LICENSE).
+## Autores y Contacto
+📌. **Desarrolladores:** [Fátima y Pablo]
+📌. **Contacto:** pablopedrenoalbaladejo@gmail.com ó felkabdani@gmail.com
+📌. **GitHub:** https://github.com/Pabl0ski/ProyectoBaseFliPaz.git
